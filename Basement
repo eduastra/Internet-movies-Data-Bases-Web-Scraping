@@ -1,0 +1,22 @@
+import lxml
+import re
+import numpy as np
+import pandas as pd
+
+from bs4 import BeautifulSoup
+from requests import get
+
+url1= "https://www.imdb.com/search/title?count=100&title_type=feature,tv_series&ref_=nv_wl_img_2"
+
+class IMDB():
+	def __init__(self, url):
+		super(IMDB, self).__init__()
+		page = get(url)
+		self.soup = BeautifulSoup(page.content, 'lxml')
+
+	def articleTitle(self):
+		return self.soup.find("h1", class_="header").text.replace("\n","")
+
+	def bodyContent(self):
+		content = self.soup.find(id="main")
+		return content.find_all("div", class_="lister-item mode-advanced")
