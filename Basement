@@ -2,11 +2,23 @@ import lxml
 import re
 import numpy as np
 import pandas as pd
+import sqlite3
 
 from bs4 import BeautifulSoup
 from requests import get
 
 url1 = "https://www.imdb.com/search/title?count=100&title_type=feature,tv_series&ref_=nv_wl_img_2"
+
+conn = sqlite3.connect('IMDataBase.sqlite')
+cur = conn.cursor()
+
+cur.execute('''
+DROP TABLE IF EXISTS films''')
+
+cur.execute('''
+CREATE TABLE films( movieTitle TEXT, movieDate TEXT, movieRunTime TEXT, movieGenre TEXT,
+ movieRating TEXT, movieScore TEXT, movieDescription TEXT, movieDirector TEXT, movieStars TEXT,
+  movieVotes TEXT, movieGross TEXT)''')
 
 class IMDB(object):
 	"""docstring for IMDB"""
@@ -86,11 +98,7 @@ class IMDB(object):
 							movieDirector, movieStars, movieVotes, movieGross]
 		return movieData
 
-if __name__ == '__main__':
-	site1 = IMDB(url1)
-	print("Subject: ", site1.articleTitle())
-	data = site1.movieData()
-
-print(IMDB(url1))
-
-    
+conteudo=IMDB(url1).movieData()
+#cur.execute('INSERT INTO films(movieTitle) VALUES( IMDB(url1).movieData(movieTitle) ')
+#cur.fetchone()
+#conn.commit()
