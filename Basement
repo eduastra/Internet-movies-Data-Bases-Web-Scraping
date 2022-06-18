@@ -98,7 +98,15 @@ class IMDB(object):
 							movieDirector, movieStars, movieVotes, movieGross]
 		return movieData
 
-conteudo=IMDB(url1).movieData()
-#cur.execute('INSERT INTO films(movieTitle) VALUES( IMDB(url1).movieData(movieTitle) ')
-#cur.fetchone()
-#conn.commit()
+
+x=IMDB.movieData(IMDB(url1))
+
+with open('base.txt','w') as f:
+	f.write(str(x))
+
+for i in range(len(x)):
+	cur.execute('INSERT INTO films (movieTitle) VALUES (?)', (x[i],))
+
+cur.fetchone()
+conn.commit()
+

@@ -1,3 +1,4 @@
+from posixpath import split
 import lxml
 import re
 from matplotlib.pyplot import connect
@@ -17,7 +18,7 @@ cur.execute('''
 DROP TABLE IF EXISTS films''')
 
 cur.execute('''
-CREATE TABLE films( movieTitle TEXT, movieDate TEXT, movieRunTime TEXT, movieGenre TEXT,
+CREATE TABLE films( id INTEGER, movieTitle TEXT, movieDate TEXT, movieRunTime TEXT, movieGenre TEXT,
  movieRating TEXT, movieScore TEXT, movieDescription TEXT, movieDirector TEXT, movieStars TEXT,
   movieVotes TEXT, movieGross TEXT)''')
 
@@ -40,26 +41,12 @@ class IMDB():
 		movieTitle = []
 		for movie in movieFrame:
 			movieFirstLine = movie.find("h3", class_="lister-item-header")
-			print(movieFirstLine)
-			with open('arq01.txt', 'w') as arquivo:
-				print(movieFirstLine.text)
+			movieTitle.append(movieFirstLine.find("a").text)
+		return movieTitle
 
-X = IMDB.movieData(IMDB(url1))
-X	
+x=IMDB.movieData(IMDB(url1))
 
-#with open("base.txt", "w") as external_file:
-#	add_text = print(IMDB.movieData(IMDB(url1)))
-#	print(add_text, file=external_file)
-#	external_file.close()
-#
-#			with open('base.txt', 'w') as f:
-#				f.write(print(movieFirstLine.text))
-#			movieTitle.append(movieFirstLine.find("a").text)
-#			cur.execute('''INSERT INTO films (movieTitle) VALUES (?)''', (str))
-#			cur.fetchone()
-#			conn.commit()
-		
-#IMDB.movieData(IMDB(url1))
-
-#with open('base.txt', 'w') as f:
-#	f.write(IMDB.movieData(IMDB(url1)))
+for i in range(len(x)):
+	cur.execute('INSERT INTO films (id) VALUES (?)', (x[i],))
+cur.fetchone()
+conn.commit()
