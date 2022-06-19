@@ -16,8 +16,8 @@ cur.execute('''
 DROP TABLE IF EXISTS films''')
 
 cur.execute('''
-CREATE TABLE films( movieTitle TEXT, movieDate TEXT, movieRunTime TEXT, movieGenre TEXT,
- movieRating TEXT, movieScore TEXT, movieDescription TEXT, movieDirector TEXT, movieStars TEXT,
+CREATE TABLE films(id INTEGER, movieTitle TEXT, movieDate TEXT, movieRunTime INTEGER, movieGenre TEXT,
+ movieRating FLOAT, movieScore FLOAT, movieDescription TEXT, movieDirector TEXT, movieStars TEXT,
   movieVotes TEXT, movieGross TEXT)''')
 
 class IMDB(object):
@@ -48,10 +48,12 @@ class IMDB(object):
 		movieStars = []
 		movieVotes = []
 		movieGross = []
+
 		for movie in movieFrame:
 			movieFirstLine = movie.find("h3", class_="lister-item-header")
 			movieTitle.append(movieFirstLine.find("a").text)
 			movieDate.append(re.sub(r"[()]","", movieFirstLine.find_all("span")[-1].text))
+			
 			try:
 				movieRunTime.append(movie.find("span", class_="runtime").text[:-4])
 			except:
@@ -98,15 +100,28 @@ class IMDB(object):
 							movieDirector, movieStars, movieVotes, movieGross]
 		return movieData
 
-
 x=IMDB.movieData(IMDB(url1))
+a=x[0]
+b=x[1]
+c=x[2]
+d=x[3]
+e=x[4]
+f=x[5]
+g=x[6]
+h=x[7]
+i=x[8]
+j=x[9]
+k=x[10]
 
-with open('base.txt','w') as f:
-	f.write(str(x))
-
-for i in range(len(x)):
-	cur.execute('INSERT INTO films (movieTitle) VALUES (?)', (x[i],))
-
+for i in range(100):
+	cur.execute('INSERT INTO films (id, movieTitle, movieDate, movieRunTime, movieGenre, movieRating) VALUES (?,?,?,?,?,?)', (i,a[i],b[i],c[i],(str(d[i]),e[i])))
+	cur.execute(''' UPDATE films SET movieGenre = REPLACE(REPLACE(REPLACE(movieGenre,"[", " "),"'"," "),"]","")''')
 cur.fetchone()
 conn.commit()
+
+"""
+modelo de loop
+for r in movieData:
+	print(r)
+"""
 

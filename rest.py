@@ -45,8 +45,27 @@ class IMDB():
 		return movieTitle
 
 x=IMDB.movieData(IMDB(url1))
+a=x[0]
+b=x[1]
+c=x[2]
+d=x[3]
+e=x[4]
+f=x[5]
+g=x[6]
+i=x[7]
+j=x[8]
+k=x[9]
+l=x[10]
+m=x[11]
 
+print(x[3])
+
+"""
 for i in range(len(x)):
-	cur.execute('INSERT INTO films (id) VALUES (?)', (x[i],))
+
+	cur.execute('INSERT INTO films (id, movieTitle) VALUES (?,?)', (i,x[i],))
+#	cur.execute('INSERT INTO films (id) VALUES (?)', (i,))
+#criar variavel codificadas dentro do loop i e no final do loop i+1 dar um commit para todas variaveis entrarem no sql de uma forma só 
 cur.fetchone()
 conn.commit()
+"""
