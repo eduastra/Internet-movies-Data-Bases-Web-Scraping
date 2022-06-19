@@ -65,7 +65,7 @@ class IMDB(object):
 			except:
 				movieRating.append(np.nan)
 			try:
-				movieScore.append(movie.find("span", class_="metascore unfavorable").text.rstrip())
+				movieScore.append(movie.find("span", class_="metascore").text.rstrip())
 			except:
 				movieScore.append(np.nan)
 
@@ -101,25 +101,35 @@ class IMDB(object):
 		return movieData
 
 x=IMDB.movieData(IMDB(url1))
-a=x[0]
-b=x[1]
-c=x[2]
-d=x[3]
-e=x[4]
-f=x[5]
-g=x[6]
-h=x[7]
-i=x[8]
-j=x[9]
-k=x[10]
+with open("base.txt", "w") as f:
+	f.write(str(x[6]))
+
+f0=x[0]
+f1=x[1]
+f2=x[2]
+f3=x[3]
+f4=x[4]
+f5=x[5]
+f6=x[6]
+f7=x[7]
+f8=x[8]
+f9=x[9]
+f10=x[10]
 
 for i in range(100):
-	cur.execute('INSERT INTO films (id, movieTitle, movieDate, movieRunTime, movieGenre, movieRating) VALUES (?,?,?,?,?,?)', (i,a[i],b[i],c[i],(str(d[i]),e[i])))
-	cur.execute(''' UPDATE films SET movieGenre = REPLACE(REPLACE(REPLACE(movieGenre,"[", " "),"'"," "),"]","")''')
+	cur.execute('INSERT INTO films (id, movieTitle, movieDate, movieRunTime, movieGenre, movieRating, movieScore, movieDescription, movieDirector, movieStars, movieVotes, movieGross) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',((i, f0[i], f1[i], f2[i], str(f3[i]), f4[i], f5[i], f6[i], f7[i], str(f8[i]), f9[i], f10[i])))
+	cur.execute(''' UPDATE films
+					SET movieGenre = REPLACE(REPLACE(REPLACE(movieGenre,"[", " "),"'"," "),"]","")''',)
 cur.fetchone()
 conn.commit()
 
 """
+modelo de impressão lista dentro de lista
+for i in range(100):
+	with open('base.txt', 'a') as f:
+		f.write(str(d[i]))
+		f.write('\n')
+
 modelo de loop
 for r in movieData:
 	print(r)
