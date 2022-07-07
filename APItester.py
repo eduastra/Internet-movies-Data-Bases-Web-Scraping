@@ -1,3 +1,18 @@
+"""
+{'main': ['original title', 'localized title', 'cast', 'genres', 'runtimes',
+ 'countries', 'country codes', 'language codes', 'color info', 'aspect ratio',
+'sound mix', 'box office', 'certificates', 'original air date', 'rating', 'votes',
+ 'cover url', 'imdbID', 'plot outline', 'languages', 'title', 'year', 'kind', 'director',
+'writer', 'producer', 'composer', 'cinematographer', 'editor', 'editorial department',
+'casting director', 'production design', 'art direction', 'set decoration', 'costume designer',
+'make up', 'production manager', 'assistant director', 'art department', 'sound crew',
+'special effects', 'visual effects', 'stunt performer', 'camera and electrical department',
+'animation department', 'casting department', 'costume department', 'location management',
+'music department', 'script department', 'transportation department', 'miscellaneous crew',
+ 'akas', 'top 250 rank', 'production companies', 'distributors',
+'special effects companies', 'other companies'], 'plot': ['plot', 'synopsis']}
+"""
+
 import sqlite3
 import requests
 from bs4 import BeautifulSoup
@@ -27,6 +42,7 @@ class IMDB():
         Row = 0
         movieFrame = self.bodyContent()
         for movie in movieFrame:
+            
             movieFinder = movie.find("h3", class_="lister-item-header")
             movieTitle = (movieFinder.find("a").text)
             movieDate = (movieFinder.find_all("span")[-1].text)
@@ -35,11 +51,15 @@ class IMDB():
             Title = movieTitle
             searchID = ia.search_movie(Title)
             IDmovie = searchID[0].movieID
-            movieAPI = ia.get_movie(IDmovie)
-            try: #studio
-                studio = movieAPI['director'][0:]
+            movieAPI = ia.get_movie('5113044')
+            list = []
+            try:
+                for Directors in movieAPI['director']:
+                    print(Directors)
             except:
-                studio = "none"
+                print("oi")
+
+
 
 
 #testando objeto
